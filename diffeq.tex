@@ -1,0 +1,407 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{mathtools}
+
+\title{A Simple Tutorial on Solving Differential Equations}
+\author{}
+\date{}
+
+\newtheorem{example}{Example}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+Differential equations describe the relationship between a function and its derivatives. They are fundamental in modeling various physical phenomena. This tutorial covers basic methods for solving common types of differential equations.
+
+\section{Real-World Applications}
+
+Differential equations are everywhere in science, engineering, economics, and biology. Here are some important real-world examples:
+
+\subsection{Population Growth and Decay}
+
+\textbf{Application:} Modeling bacteria growth, radioactive decay, or human population dynamics.
+
+The basic model is:
+\begin{equation}
+\frac{dP}{dt} = kP
+\end{equation}
+
+where $P(t)$ is the population at time $t$, and $k$ is the growth rate (positive) or decay rate (negative).
+
+\textbf{Solution:} $P(t) = P_0 e^{kt}$, where $P_0$ is the initial population.
+
+\textbf{Real example:} Carbon-14 dating uses the decay equation with $k = -0.0001216$ per year to determine the age of archaeological artifacts.
+
+\subsection{Newton's Law of Cooling}
+
+\textbf{Application:} Predicting how quickly your coffee cools down, determining time of death in forensics, or designing HVAC systems.
+
+\begin{equation}
+\frac{dT}{dt} = -k(T - T_{ambient})
+\end{equation}
+
+where $T(t)$ is the temperature of the object, $T_{ambient}$ is the surrounding temperature, and $k$ is the cooling constant.
+
+\textbf{Solution:} $T(t) = T_{ambient} + (T_0 - T_{ambient})e^{-kt}$
+
+\textbf{Real example:} A forensic investigator finds a body at 30°C in a room at 20°C. Knowing the normal body temperature is 37°C and the cooling rate, they can estimate the time of death.
+
+\subsection{Spring-Mass Systems}
+
+\textbf{Application:} Car suspension design, earthquake-resistant buildings, vibration isolation in machinery.
+
+The equation of motion is:
+\begin{equation}
+m\frac{d^2x}{dt^2} + c\frac{dx}{dt} + kx = F(t)
+\end{equation}
+
+where $m$ is mass, $c$ is damping coefficient, $k$ is spring constant, and $F(t)$ is external force.
+
+\textbf{Real example:} Engineers designing car shock absorbers solve this equation to ensure the car doesn't bounce excessively after hitting a bump while still providing a comfortable ride.
+
+\subsection{Electrical Circuits (RLC Circuits)}
+
+\textbf{Application:} Designing filters for audio systems, radio tuners, power supplies, and signal processing.
+
+For an RLC circuit:
+\begin{equation}
+L\frac{d^2Q}{dt^2} + R\frac{dQ}{dt} + \frac{Q}{C} = V(t)
+\end{equation}
+
+where $L$ is inductance, $R$ is resistance, $C$ is capacitance, $Q(t)$ is charge, and $V(t)$ is voltage.
+
+\textbf{Real example:} Radio receivers use RLC circuits tuned to specific frequencies. Solving this differential equation helps engineers design circuits that pick up only the desired radio station.
+
+\subsection{Chemical Reaction Rates}
+
+\textbf{Application:} Pharmaceutical manufacturing, pollution control, food preservation.
+
+For a first-order reaction:
+\begin{equation}
+\frac{d[A]}{dt} = -k[A]
+\end{equation}
+
+where $[A]$ is the concentration of reactant A and $k$ is the rate constant.
+
+\textbf{Real example:} Drug metabolism in the body follows first-order kinetics. This helps pharmacologists determine proper dosing intervals to maintain therapeutic drug levels.
+
+\subsection{Projectile Motion with Air Resistance}
+
+\textbf{Application:} Ballistics, sports science (golf, baseball), aerospace engineering.
+
+\begin{equation}
+m\frac{dv}{dt} = -mg - kv
+\end{equation}
+
+where $v$ is velocity, $m$ is mass, $g$ is gravity, and $k$ is air resistance coefficient.
+
+\textbf{Real example:} Artillery calculations must account for air resistance. Without solving these equations, long-range artillery would miss targets by hundreds of meters.
+
+\subsection{Predator-Prey Models (Lotka-Volterra)}
+
+\textbf{Application:} Ecology, wildlife management, fisheries regulation.
+
+\begin{align}
+\frac{dx}{dt} &= \alpha x - \beta xy\\
+\frac{dy}{dt} &= \delta xy - \gamma y
+\end{align}
+
+where $x$ is prey population, $y$ is predator population, and $\alpha, \beta, \delta, \gamma$ are interaction parameters.
+
+\textbf{Real example:} Fisheries managers use these models to set sustainable catch limits, ensuring fish populations don't collapse while maintaining profitable fishing industries.
+
+\subsection{Spread of Infectious Diseases (SIR Model)}
+
+\textbf{Application:} Epidemiology, public health policy, pandemic response planning.
+
+\begin{align}
+\frac{dS}{dt} &= -\beta SI\\
+\frac{dI}{dt} &= \beta SI - \gamma I\\
+\frac{dR}{dt} &= \gamma I
+\end{align}
+
+where $S$ is susceptible, $I$ is infected, $R$ is recovered, $\beta$ is infection rate, and $\gamma$ is recovery rate.
+
+\textbf{Real example:} During the COVID-19 pandemic, epidemiologists used variations of this model to predict case numbers, assess the impact of interventions (lockdowns, masks), and plan hospital capacity.
+
+\subsection{Financial Mathematics}
+
+\textbf{Application:} Option pricing, portfolio management, risk assessment.
+
+The Black-Scholes equation for option pricing:
+\begin{equation}
+\frac{\partial V}{\partial t} + \frac{1}{2}\sigma^2 S^2 \frac{\partial^2 V}{\partial S^2} + rS\frac{\partial V}{\partial S} - rV = 0
+\end{equation}
+
+where $V$ is option value, $S$ is stock price, $\sigma$ is volatility, and $r$ is risk-free rate.
+
+\textbf{Real example:} Investment banks use this equation daily to price stock options, warrants, and other derivatives worth trillions of dollars globally.
+
+\subsection{Heat Transfer and Diffusion}
+
+\textbf{Application:} Building insulation design, computer chip cooling, cooking, climate modeling.
+
+The heat equation:
+\begin{equation}
+\frac{\partial u}{\partial t} = \alpha \nabla^2 u
+\end{equation}
+
+where $u$ is temperature and $\alpha$ is thermal diffusivity.
+
+\textbf{Real example:} Engineers designing smartphone processors solve heat equations to ensure the chip doesn't overheat during intensive use, preventing thermal throttling and damage.
+
+\subsection{Rocket Motion}
+
+\textbf{Application:} Space exploration, satellite launches, missile systems.
+
+Tsiolkovsky rocket equation (derived from differential equations):
+\begin{equation}
+m\frac{dv}{dt} = -v_{exhaust}\frac{dm}{dt} - mg
+\end{equation}
+
+\textbf{Real example:} SpaceX engineers solve these equations to calculate the fuel needed to reach orbit, the optimal trajectory, and staging times for multi-stage rockets.
+
+\subsection{Water Flow in Pipes}
+
+\textbf{Application:} Municipal water systems, oil pipelines, irrigation systems.
+
+\begin{equation}
+\frac{\partial h}{\partial t} + \frac{\partial Q}{\partial x} = 0
+\end{equation}
+
+where $h$ is water height and $Q$ is flow rate.
+
+\textbf{Real example:} City planners use these equations to design water distribution networks that maintain adequate pressure throughout the system, even during peak usage times.
+
+\section{First-Order Ordinary Differential Equations}
+
+\subsection{Separation of Variables}
+
+The simplest method applies when we can separate variables:
+
+\begin{equation}
+\frac{dy}{dx} = f(x)g(y)
+\end{equation}
+
+We rewrite this as:
+
+\begin{equation}
+\frac{1}{g(y)}dy = f(x)dx
+\end{equation}
+
+Then integrate both sides:
+
+\begin{equation}
+\int\frac{1}{g(y)}dy = \int f(x)dx + C
+\end{equation}
+
+\begin{example}
+Solve $\frac{dy}{dx} = xy$
+
+\textbf{Solution:}
+\begin{align}
+\frac{dy}{y} &= x\,dx\\
+\int\frac{dy}{y} &= \int x\,dx\\
+\ln|y| &= \frac{x^2}{2} + C_1\\
+y &= C\,e^{\frac{x^2}{2}}
+\end{align}
+
+where $C = \pm e^{C_1}$ is an arbitrary constant.
+\end{example}
+
+\subsection{Linear First-Order Equations}
+
+A first-order linear differential equation has the form:
+
+\begin{equation}
+\frac{dy}{dx} + P(x)y = Q(x)
+\end{equation}
+
+The solution is given by:
+
+\begin{equation}
+y\cdot e^{\int P(x)\,dx} = \int Q(x)\cdot e^{\int P(x)\,dx}\,dx + C
+\end{equation}
+
+\begin{example}
+Solve $\frac{dy}{dx} + 2y = e^x$
+
+\textbf{Solution:}\\
+Here, $P(x) = 2$ and $Q(x) = e^x$
+
+First, find the integrating factor:
+\begin{equation}
+e^{\int P(x)\,dx} = e^{\int 2\,dx} = e^{2x}
+\end{equation}
+
+Then:
+\begin{align}
+y\cdot e^{2x} &= \int e^x \cdot e^{2x}\,dx + C\\
+&= \int e^{3x}\,dx + C\\
+&= \frac{1}{3}e^{3x} + C
+\end{align}
+
+Therefore:
+\begin{equation}
+y = \frac{1}{3}e^x + Ce^{-2x}
+\end{equation}
+\end{example}
+
+\section{Second-Order Linear Differential Equations}
+
+\subsection{Homogeneous Equations with Constant Coefficients}
+
+For equations of the form:
+
+\begin{equation}
+ay'' + by' + cy = 0
+\end{equation}
+
+We assume a solution $y = e^{rx}$ and substitute to get the characteristic equation:
+
+\begin{equation}
+ar^2 + br + c = 0
+\end{equation}
+
+\textbf{Case 1:} If the roots $r_1$ and $r_2$ are real and distinct, the general solution is:
+
+\begin{equation}
+y = C_1e^{r_1x} + C_2e^{r_2x}
+\end{equation}
+
+\textbf{Case 2:} If the roots are real and equal ($r_1 = r_2 = r$), the general solution is:
+
+\begin{equation}
+y = C_1e^{rx} + C_2xe^{rx}
+\end{equation}
+
+\textbf{Case 3:} If the roots are complex conjugates $r_1 = \alpha + i\beta$ and $r_2 = \alpha - i\beta$, the general solution is:
+
+\begin{equation}
+y = e^{\alpha x}(C_1\cos(\beta x) + C_2\sin(\beta x))
+\end{equation}
+
+\begin{example}
+Solve $y'' - y' - 6y = 0$
+
+\textbf{Solution:}\\
+The characteristic equation is $r^2 - r - 6 = 0$
+
+Factoring: $(r-3)(r+2) = 0$, which gives $r_1 = 3$ and $r_2 = -2$
+
+The general solution is:
+\begin{equation}
+y = C_1e^{3x} + C_2e^{-2x}
+\end{equation}
+\end{example}
+
+\subsection{Non-homogeneous Equations}
+
+For equations of the form:
+
+\begin{equation}
+ay'' + by' + cy = g(x)
+\end{equation}
+
+The general solution is:
+
+\begin{equation}
+y = y_h + y_p
+\end{equation}
+
+where $y_h$ is the general solution of the homogeneous equation and $y_p$ is a particular solution.
+
+To find $y_p$, we can use:
+
+\begin{enumerate}
+\item \textbf{Method of Undetermined Coefficients}: Assume a form for $y_p$ based on $g(x)$ and solve for the coefficients.
+\item \textbf{Variation of Parameters}: A more general method that works for any $g(x)$.
+\end{enumerate}
+
+\begin{example}
+Solve $y'' - y' - 6y = 10e^{2x}$
+
+\textbf{Solution:}\\
+From the previous example, the homogeneous solution is $y_h = C_1e^{3x} + C_2e^{-2x}$
+
+For the particular solution, since $g(x) = 10e^{2x}$, we try $y_p = Ae^{2x}$ (since $r = 2$ is not a root of the characteristic equation).
+
+Substituting:
+\begin{align}
+y_p'' - y_p' - 6y_p &= A(4e^{2x} - 2e^{2x} - 6e^{2x})\\
+&= A(-4e^{2x})\\
+&= 10e^{2x}
+\end{align}
+
+Therefore, $A = -\frac{10}{4} = -\frac{5}{2}$, so $y_p = -\frac{5}{2}e^{2x}$
+
+The general solution is:
+\begin{equation}
+y = C_1e^{3x} + C_2e^{-2x} - \frac{5}{2}e^{2x}
+\end{equation}
+\end{example}
+
+\section{Solving Initial Value Problems}
+
+When initial conditions are given, we can determine the values of the arbitrary constants.
+
+\begin{example}
+Solve $y'' - y' - 6y = 0$ with $y(0) = 4$ and $y'(0) = 3$
+
+\textbf{Solution:}\\
+From our earlier work, the general solution is:
+\begin{equation}
+y = C_1e^{3x} + C_2e^{-2x}
+\end{equation}
+
+Taking the derivative:
+\begin{equation}
+y' = 3C_1e^{3x} - 2C_2e^{-2x}
+\end{equation}
+
+Applying the initial conditions:
+
+$y(0) = 4$ gives $C_1 + C_2 = 4$\\
+$y'(0) = 3$ gives $3C_1 - 2C_2 = 3$
+
+Solving this system:
+$C_1 = 1$ and $C_2 = 3$
+
+Therefore, the solution is:
+\begin{equation}
+y = e^{3x} + 3e^{-2x}
+\end{equation}
+\end{example}
+
+\section{Systems of Differential Equations}
+
+For a system of first-order linear equations:
+
+\begin{equation}
+\frac{d\vec{y}}{dx} = A\vec{y} + \vec{g}(x)
+\end{equation}
+
+where $\vec{y}$ is a vector of functions, $A$ is a constant matrix, and $\vec{g}(x)$ is a vector of functions.
+
+The solution involves finding eigenvalues and eigenvectors of matrix $A$.
+
+\section{Conclusion}
+
+This tutorial covered basic methods for solving differential equations. With practice, you'll be able to recognize which method to apply for different types of equations. Remember that many differential equations cannot be solved analytically, and numerical methods may be necessary.
+
+\section{Practice Problems}
+
+\begin{enumerate}
+\item Solve $\frac{dy}{dx} = 2xy$ with $y(0) = 1$
+\item Solve $y'' + 4y' + 4y = 0$ with $y(0) = 2$ and $y'(0) = -3$
+\item Solve $y'' + 9y = 6\sin(3x)$
+\end{enumerate}
+
+\end{document}
